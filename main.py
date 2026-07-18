@@ -15,24 +15,35 @@ def get_db():
     )
 
 
-@app.on_event("startup")
-def startup_event():
+@app.get("/")
+def home():
+    return {"message": "FastAPI is running"}
+
+
+@app.get("/db-test")
+def db_test():
     try:
         conn = get_db()
 
         if conn.is_connected():
-            print("✅ Database connected successfully!")
-            print("MySQL Version:", conn.get_server_info())
-
             cursor = conn.cursor()
             cursor.execute("SELECT DATABASE();")
-            db = cursor.fetchone()
+            db = cursor.fetchone()[0]
 
-            print("Database:", db[0])
+            version = conn.get_server_info()
 
             cursor.close()
             conn.close()
 
+            return {
+                "success": True,
+                "message": "Database connected successfully",
+                "database": db,
+                "mysql_version": version,
+            }
+
     except Error as e:
-        print("❌ Database connection failed:")
-        print(e)
+        return {
+            "success": False,
+            "message": str(e),
+        }
