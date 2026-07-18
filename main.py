@@ -1,5 +1,9 @@
-from mysql.connector import Error
+from fastapi import FastAPI
 import mysql.connector
+from mysql.connector import Error
+
+app = FastAPI()
+
 
 def get_db():
     return mysql.connector.connect(
@@ -7,30 +11,28 @@ def get_db():
         user="a1784e1f_vivek",
         password="Vivek@512004",
         database="a1784e1f_mfd",
-        port=3306
+        port=3306,
     )
 
-def test_db_connection():
+
+@app.on_event("startup")
+def startup_event():
     try:
         conn = get_db()
 
         if conn.is_connected():
             print("✅ Database connected successfully!")
-            print("MySQL Server Version:", conn.get_server_info())
+            print("MySQL Version:", conn.get_server_info())
 
             cursor = conn.cursor()
             cursor.execute("SELECT DATABASE();")
             db = cursor.fetchone()
 
-            print("Connected Database:", db[0])
+            print("Database:", db[0])
 
             cursor.close()
+            conn.close()
 
     except Error as e:
-        print("❌ Connection failed!")
+        print("❌ Database connection failed:")
         print(e)
-
-    finally:
-        if 'conn' in locals() and conn.is_connected():
-            conn.close()
-            print("Connection closed.")
