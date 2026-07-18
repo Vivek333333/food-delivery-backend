@@ -32,7 +32,7 @@ otp_store: Dict[str, dict] = {}
 
 def get_db():
     return mysql.connector.connect(
-        host="gateway01.ap-southeast-1.prod.aws.tidbcloud.com", user="a1784e1f_vivek", password="pFLo80lCth6C9gx5", database="a1784e1f_mfd"
+        host="localhost:3306", user="a1784e1f_vivek", password="Vivek@512004", database="a1784e1f_mfd"
     )
 
 # ---------------- SMS DISPATCH UTILITY ----------------
