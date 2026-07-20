@@ -395,23 +395,23 @@ def remove_order(uid: int, pid: int):
 def home():
     conn = None
     try:
-        conn = mysql.connector.connect(**DB_CONFIG)
+        conn = get_db()
 
         if conn.is_connected():
             return {
                 "message": "FastAPI is running",
                 "database": "Connected to BigRock MySQL successfully"
             }
-        else:
-            return {
-                "message": "FastAPI is running",
-                "database": "Connection failed"
-            }
+
+        return {
+            "message": "FastAPI is running",
+            "database": "Connection failed"
+        }
 
     except Error as e:
         return {
             "message": "FastAPI is running",
-            "database": f"Error: {str(e)}"
+            "database": str(e)
         }
 
     finally:
