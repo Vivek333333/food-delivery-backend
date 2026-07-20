@@ -390,3 +390,34 @@ def remove_order(uid: int, pid: int):
     finally:
         cursor.close()
         db.close()
+@app.get("/db-test")
+@app.get("/")
+def home():
+    return {"message": "FastAPI is running"}
+
+@app.get("/check-db")
+def check_db():
+    conn = None
+    try:
+        conn = mysql.connector.connect(**DB_CONFIG)
+
+        if conn.is_connected():
+            return {
+                "status": "success",
+                "message": "Connected to BigRock MySQL successfully"
+            }
+
+        return {
+            "status": "failed",
+            "message": "Connection not established"
+        }
+
+    except Error as e:
+        return {
+            "status": "error",
+            "message": str(e)
+        }
+
+    finally:
+        if conn and conn.is_connected():
+            conn.close()
