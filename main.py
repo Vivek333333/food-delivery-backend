@@ -33,11 +33,11 @@ otp_store: Dict[str, dict] = {}
 
 def get_db():
     return mysql.connector.connect(
-        host="66.116.229.214",
-        user="a1784e1f_vivek",
-        password="Vivek@512004",
-        database="a1784e1f_mfd",
-        port=3306,
+        host="localhost",
+        user="root",
+        password="",
+        database="mfd",
+    
     )
 
 
