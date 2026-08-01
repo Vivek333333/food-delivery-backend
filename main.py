@@ -451,7 +451,7 @@ def delete_account():
         <h3>Data Retained</h3>
         <p>No personal data is retained except where required by law.</p>
 
-        <p>Email: <b>johnmarcospizza.com</b></p>
+        <p>Email: <b>johnmarcospizza@gmail.com</b></p>
     </body>
     </html>
     """
