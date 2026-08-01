@@ -8,6 +8,7 @@ from typing import List, Optional, Dict
 import random
 import os
 import requests
+from fastapi.responses import HTMLResponse
 from mysql.connector import Error
 
 app = FastAPI()
@@ -417,3 +418,40 @@ def home():
     finally:
         if conn and conn.is_connected():
             conn.close()
+
+
+@app.get("/delete-account", response_class=HTMLResponse)
+def delete_account():
+    return """
+    <!DOCTYPE html>
+    <html>
+    <head>
+        <title>Delete Account</title>
+    </head>
+    <body style="font-family: Arial; margin:40px;">
+        <h1>Delete Your Account</h1>
+
+        <p>If you want to delete your account, please send an email with your registered phone number.</p>
+
+        <h3>Steps to Delete Your Account</h3>
+        <ol>
+            <li>Send an email with your registered phone number.</li>
+            <li>We will verify your request.</li>
+            <li>Your account will be permanently deleted within 7 days.</li>
+        </ol>
+
+        <h3>Data Deleted</h3>
+        <ul>
+            <li>User Profile</li>
+            <li>Orders</li>
+            <li>Cart</li>
+            <li>Saved Addresses</li>
+        </ul>
+
+        <h3>Data Retained</h3>
+        <p>No personal data is retained except where required by law.</p>
+
+        <p>Email: <b>support@yourdomain.com</b></p>
+    </body>
+    </html>
+    """
