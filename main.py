@@ -26,7 +26,7 @@ app.add_middleware(
 app.mount("/images", StaticFiles(directory="images"), name="images")
 
 # Dynamic IP string used for formatting your media assets securely
-BASE_MEDIA_URL = "https://frontend.3utilities.com/images/"
+BASE_MEDIA_URL = "https://johnmarcos.online/images/"
 
 # Global in-memory storage for OTPs (Key: phone number, Value: dict with OTP and expiry time)
 otp_store: Dict[str, dict] = {}
