@@ -178,6 +178,8 @@ class OrderItem(BaseModel):
 
 class OrderItemResponse(BaseModel):
     pid: int
+    rid: Optional[int] = None
+    restaurant_name: Optional[str] = None
     product: str
     price: float
     image: str
@@ -637,6 +639,8 @@ def get_user_orders(uid: int):
         query = """
             SELECT 
                 o.pid, 
+                p.rid,
+                COALESCE(r.rname, 'Unknown Restaurant') AS restaurant_name,
                 p.product, 
                 p.price, 
                 p.images, 
@@ -647,8 +651,9 @@ def get_user_orders(uid: int):
                 SUM(o.price * o.quantity) as total_amount
             FROM `orders` o
             JOIN products p ON o.pid = p.pid
+            LEFT JOIN restaurants r ON p.rid = r.rid
             WHERE o.uid = %s
-            GROUP BY o.pid, p.product, p.price, p.images, o.address, o.paymenttype, o.status
+            GROUP BY o.pid, p.rid, r.rname, p.product, p.price, p.images, o.address, o.paymenttype, o.status
         """
         cursor.execute(query, (uid,))
         results = cursor.fetchall()
@@ -678,6 +683,8 @@ async def list_orders():
             SELECT 
                 o.oid, 
                 o.pid, 
+                p.rid,
+                COALESCE(r.rname, 'Unknown Restaurant') AS restaurant_name,
                 o.uid, 
                 COALESCE(p.product, 'Unknown Product') AS product_name,
                 COALESCE(u.username, 'Unknown User') AS username,
@@ -689,6 +696,7 @@ async def list_orders():
                 o.status
             FROM orders o
             LEFT JOIN products p ON o.pid = p.pid
+            LEFT JOIN restaurants r ON p.rid = r.rid
             LEFT JOIN `user` u ON o.uid = u.uid
         """
         cursor.execute(query)
