@@ -47,7 +47,7 @@ app.add_middleware(
 # =========================================================
 
 app.mount("/images", StaticFiles(directory=IMAGES_DIR), name="images")
-BASE_MEDIA_URL = "http://192.168.1.16:8000/images/"
+BASE_MEDIA_URL = "https://johnmarcos.online/images/"
 
 
 # =========================================================
